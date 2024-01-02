@@ -1,0 +1,88 @@
+﻿@model UserKayitveGirisEFProje.Utils.GirisPageModel
+@{
+    ViewData["Title"] = "Anasayfa";
+}
+
+<div class="conteiner">
+    <div class="row">
+        <div class="col-md-2" style="background-color:burlywood">
+            <p style="color:yellow;text-align:center;font-size:25px;">Filtreleme Alanı</p>
+
+            <ul class="list-group">
+                @foreach (var item in Model.Categories)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center" style="margin-bottom:3px;">
+                        @item.Name
+                        @Html.ActionLink(
+                                 linkText: "Url",
+                                 actionName: "FiltrelenmisIlanlarUrl",
+                                 controllerName: "Home",
+                                 routeValues: new { categoryId = item.Id },
+                                 htmlAttributes: null)
+
+                        @* <button onclick="CategoryFiltrele(@item.Id)" class="badge bg-primary rounded-pill">14</button>
+                    <button onclick="SayfaYenilenemeliFiltreleme(@item.Id)" class="badge bg-primary rounded-pill">Sayfa Yenilelemeli</button> *@
+
+                        <form action="@Url.Action("FiltrelenmisIlanlarForm","Home")" method="post">
+                            <input type="hidden" name="categoryId" value="@item.Id" />
+                            <input type="submit" value="Form" />
+                        </form>
+
+                    </li>
+                    @* <button type="submit">Submit sayfayı yeniler</button> *@
+                    <button type="button" onclick="CategoryFiltrele(@item.Id)">Sayfa yenilenmez</button>
+                    <br>
+
+                }
+            </ul>
+
+        </div>
+
+        <div class="col-md-10">
+            <div class="text-center">
+                <div id="araclist" class="row row-cols-1 row-cols-md-4 g-4">
+
+                    @foreach (var item in Model.Adverts)
+                    {
+                        <div class="col">
+                            <div class="card h-100">
+                                <img src="@item.ImagePath" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="color:red;">@item.Marka / @item.Model</h5>
+                                    <p class="card-text">@item.Aciklama</p>
+                                </div>
+                                <div class="card-footer">
+                                    <small class="text-body-secondary">@item.Yil Model / @item.YakitTuru / @item.Vites</small>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function SayfaYenilenemeliFiltreleme(categoryId) {
+        $.post("/Home/FiltrelenmisIlanlar", { categoryId }, function (data) {
+
+        });
+    }
+
+
+    function CategoryFiltrele(categoryId) {
+        $.post("Ilan/GetAdvertsByCategoryId", { categoryId }, function (data) {
+
+            var str = '';
+            for (i = 0; i < data.length; i++) {
+                str += '<ul><li class="list-group-item d-flex justify-content-between align-items-center" style="margin-bottom:3px;"><div class="col"><div class="card h-1"><img src="' + data[i].imagePath + '" class="card-img-top" alt = "..." ><div class="card-body"><h5 class="card-title" style = "color:red;">' + data[i].marka + ' / ' + data[i].model + '</h5><p class="card-text">' + data[i].aciklama + '</p></div><div class="card-footer"><small class="text-body-secondary"> ' + data[i].yil + ' Model / ' + data[i].yakitTuru + ' / ' + data[i].vites + '</small></div></div> </li></ul>'
+            }
+            $("#araclist").html(str);
+            //console.log(str);
+            // var k = data;
+            ''
+        });
+    }
+</script>
+

@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "KayitOl";
+}
+
+<h1 style="text-align:center;color:green;font-size:60px;margin-top:40px;margin-bottom:40px;">KAYIT OL</h1>
+
+<div style="text-align:center;">
+
+    <input class="kayitVeGirisInput" id="adi" type="text" name="fname" placeholder="Adınız" />
+    <br />
+
+    <input class="kayitVeGirisInput" id="soyadi" type="text" name="fname" placeholder="Soyadınız" />
+    <br />
+
+    <input class="kayitVeGirisInput" id="email" type="text" name="fname" placeholder="Telefon veya Email Giriniz" />
+    <br />
+
+    <input class="kayitVeGirisInput" id="sifre" type="text" name="fname" placeholder="Şifre Giriniz" />
+    <br />
+
+    <input class="kayitVeGirisInput" id="sifreTekrar" type="text" name="fname" placeholder="Şifre Tekrar" />
+    <br />
+
+    <button class="kayitVeGirisButton" onclick="KayitVeriYolla()"> Kayıt Ol </button>
+</div>
+
+<script>
+    class UserViewModel {
+        constructor() {
+            this.Adi = "";
+            this.Soyadi = "";
+            this.Email = "";
+            this.Sifre = "";
+            this.SifreTekrar = "";
+        }
+    }
+
+    function KayitVeriYolla() {
+        var adi = $("#adi").val();
+        var soyadi = $("#soyadi").val();
+        var email = $("#email").val();
+        var sifre = $("#sifre").val();
+        var sifreTekrar = $("#sifreTekrar").val();
+
+        var userVM = new UserViewModel();
+        userVM.Adi = adi;
+        userVM.Soyadi = soyadi;
+        userVM.Email = email;
+        userVM.Sifre = sifre;
+        userVM.SifreTekrar = sifreTekrar;
+
+        //alert(userKayitVM.Adi)
+        if (userVM.sifre == userVM.sifreTekrar) {
+            $.post("KayitYap", { userVM }, function (data) {
+                if (data == true) {
+                    window.location="/home/index"
+                }
+                else {
+                    alert("KAYIT BAŞARISIZ")
+                }
+            });
+        }
+        else {
+            alert("Şifreler Uyuşmuyor")
+        }
+    }
+
+
+</script>

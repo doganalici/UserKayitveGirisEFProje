@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "GirisYap";
+}
+
+<h1 style="text-align:center;color:green;font-size:60px;margin-top:40px;margin-bottom:40px;">GİRİŞ YAP</h1>
+
+<div style="text-align:center;">
+
+    <input class="kayitVeGirisInput" id="email" type="text" name="fname" placeholder="Telefon veya Email Giriniz" />
+    <br />
+
+    <input class="kayitVeGirisInput" id="sifre" type="text" name="fname" placeholder="Şifre Giriniz" />
+    <br />
+
+    <button class="kayitVeGirisButton" onclick="GirisYap()">Giriş Yap</button>
+</div>
+
+<script>
+    class GirisViewModel {
+        constructor() {
+
+            this.Email = "";
+            this.Sifre = "";
+
+        }
+    }
+
+    function GirisYap() {
+
+        var girisVM = new GirisViewModel();
+        var email = $("#email").val();
+        var sifre = $("#sifre").val();
+
+
+        girisVM.Email = email;
+        girisVM.Sifre = sifre;
+
+
+        $.post("GirisYap", { girisVM }, function (data) {
+            if (data == true) {
+                window.location = "/home/index"
+            }
+            else {
+                alert("GİRİŞ BAŞARISIZ")
+            }
+        });
+
+
+    }
+
+
+</script>

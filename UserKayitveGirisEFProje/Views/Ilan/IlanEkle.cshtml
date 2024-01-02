@@ -1,0 +1,99 @@
+﻿@model List<UserKayitveGirisEFProje.Entity.Category>
+@{
+    ViewData["Title"] = "IlanEkle";
+}
+
+<h1 style="text-align:center;color:green;font-size:60px;margin-top:40px;margin-bottom:40px;">İLAN EKLE</h1>
+
+<div style="text-align:center;">
+    <select id="categoryId" class="form-select ilanVeriGirisInput" aria-label="Default select example">
+        <option selected>Lütfen Aracın Markasını Seçiniz</option>
+        @foreach (var item in Model)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+    </select>
+    <br>
+    <input class="ilanVeriGirisInput" id="marka" type="text" name="fname" placeholder="Marka" required />
+    <br />
+
+    <input class="ilanVeriGirisInput" id="model" type="text" name="fname" placeholder="Model" />
+    <br />
+
+    <input class="ilanVeriGirisInput" id="renk" type="text" name="fname" placeholder="Renk" />
+    <br />
+
+    <input class="ilanVeriGirisInput" id="yil" type="text" name="fname" placeholder="Yıl" />
+    <br />
+
+    <input class="ilanVeriGirisInput" id="vites" type="text" name="fname" placeholder="Vites" />
+    <br />
+
+    <input class="ilanVeriGirisInput" id="yakitTuru" type="text" name="fname" placeholder="Yakıt Türü" />
+    <br />
+
+    <input class="ilanVeriGirisInput" id="kilometre" type="text" name="fname" placeholder="Kilometre" />
+    <br />
+
+    <textarea class="ilanVeriGirisInput" id="aciklama" type="text" name="fname" placeholder="Açıklama" /></textarea>
+    <br />
+
+    <button class="ilanVeriGirisButton" onclick="IlanVeriYolla()"> İlanı Kaydet </button>
+</div>
+
+
+<script>
+    class AdvertViewModel {
+        constructor() {
+            this.Marka = "";
+            this.Model = "";
+            this.Renk = "";
+            this.Yil = 0;
+            this.Vites = "";
+            this.YakitTuru = "";
+            this.Kilometre = 0;
+            this.Aciklama = "";
+            this.CategoryId = 0;
+        }
+    }
+
+    function IlanVeriYolla() {
+        var marka = $("#marka").val();
+        var model = $("#model").val();
+        var renk = $("#renk").val();
+        var yil = $("#yil").val();
+        var vites = $("#vites").val();
+        var yakitTuru = $("#yakitTuru").val();
+        var kilometre = $("#kilometre").val();
+        var aciklama = $("#aciklama").val();
+        var categoryId = $("#categoryId").val();
+       
+
+        var advertVM = new AdvertViewModel();
+        advertVM.Marka = marka;
+        advertVM.Model = model;
+        advertVM.Renk = renk;
+        advertVM.Yil = yil;
+        advertVM.Vites = vites;
+        advertVM.YakitTuru = yakitTuru;
+        advertVM.Kilometre = kilometre;
+        advertVM.Aciklama = aciklama;
+        advertVM.CategoryId = categoryId;
+
+
+        // alert(advertVM.Renk)
+        if (advertVM.CategoryId != "" && advertVM.Marka != "" && advertVM.Model != "" && advertVM.Renk != "" && advertVM.Yil != "" && advertVM.Vites != "" && advertVM.YakitTuru != "" && advertVM.Kilometre != "") {
+            $.post("IlanKayit", { advertVM }, function (data) {
+                if (data == true) {
+                    window.location = "/home/index"
+                }
+                else {
+                    alert("KAYIT BAŞARISIZ")
+                }
+            });
+        }
+        else {
+            alert("KAYITTA EKSİK ALAN YADA ALANLAR VAR")
+        }
+    }
+</script>
